@@ -33,7 +33,7 @@ public class CustomerRestController {
 		return customerDAO.findAll();
 	}
 	
-	@GetMapping("/customer/{customerid}")
+	@GetMapping("/customers/{customerid}")
 	public Customer getCustomerById(@PathVariable Long customerid){
 		Optional<Customer> optCustomer = customerDAO.findById(customerid);
 		if(!optCustomer.isPresent()) throw new CustomerNotFoundException("this customer with id="+ customerid+" does not exist");
@@ -52,7 +52,7 @@ public class CustomerRestController {
 		return ResponseEntity.created(location).body(customer1);
 	}
 	
-	@PutMapping("/customer/{customerid}")
+	@PutMapping("/customers/{customerid}")
 	public ResponseEntity<Customer> updateCustomer(@Valid @RequestBody Customer customer, @PathVariable Long customerid) {
 		Optional<Customer> optCustomer = customerDAO.findById(customerid);
 		if(!optCustomer.isPresent()) throw new CustomerNotFoundException("this customer with id="+ customerid+" does not exist");
@@ -60,7 +60,7 @@ public class CustomerRestController {
 		Customer customer1 = customerDAO.save(customer);
 		return new ResponseEntity<Customer>(customer1, HttpStatus.OK);
 	}
-	@DeleteMapping("/customer/{customerid}")
+	@DeleteMapping("/customers/{customerid}")
 	public void deleteCustomer(Long customerid) {
 		Optional<Customer> optCustomer = customerDAO.findById(customerid);
 		if(!optCustomer.isPresent()) throw new CustomerNotFoundException("this customer with id="+ customerid+" does not exist");
