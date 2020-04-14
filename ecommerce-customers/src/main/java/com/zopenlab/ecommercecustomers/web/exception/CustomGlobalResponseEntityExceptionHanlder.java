@@ -1,4 +1,4 @@
-package com.zopenlab.ecommerceproduct.exceptions;
+package com.zopenlab.ecommercecustomers.web.exception;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -16,39 +16,40 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+
+
 @ControllerAdvice
-public class CustomGlobalResponseExceptionEntityHandler extends ResponseEntityExceptionHandler {
+public class CustomGlobalResponseEntityExceptionHanlder extends ResponseEntityExceptionHandler {
 
 	
-	@ExceptionHandler(ProductNotFoundException.class)
-	public final ResponseEntity<Object> handleProductNotFoundException(ProductNotFoundException ex, WebRequest request) {
+	@ExceptionHandler(CustomerNotFoundException.class)
+	public final ResponseEntity<Object> handleCustomerNotFoundException(CustomerNotFoundException ex, WebRequest request) {
 		
-		Map<String, Object> body= new LinkedHashMap<String, Object>();
+		
+		Map<String, Object> body = new LinkedHashMap<String, Object>();
 		body.put("timestamp", LocalDateTime.now());
 		body.put("status", HttpStatus.NOT_FOUND.value());
 		body.put("errors", Arrays.asList(ex.getMessage()));
 		
 		return new ResponseEntity<Object>(body, HttpStatus.NOT_FOUND);
-		
 	}
 	
 	@ExceptionHandler(Exception.class)
-	public final ResponseEntity<Object> handle505Exception(Exception ex, WebRequest request) {
+	public  ResponseEntity<Object> handle505Exception(Exception ex, WebRequest request) {
 		
-		Map<String, Object> body= new LinkedHashMap<String, Object>();
+		
+		Map<String, Object> body = new LinkedHashMap<String, Object>();
 		body.put("timestamp", LocalDateTime.now());
 		body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 		body.put("errors", Arrays.asList(ex.getMessage()));
 		
 		return new ResponseEntity<Object>(body, HttpStatus.INTERNAL_SERVER_ERROR);
-		
 	}
 	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		
-		Map<String, Object> body= new LinkedHashMap<String, Object>();
+		Map<String, Object> body = new LinkedHashMap<String, Object>();
 		body.put("timestamp", LocalDateTime.now());
 		body.put("status", status);
 		List<String> errors = ex.getBindingResult()
@@ -57,9 +58,9 @@ public class CustomGlobalResponseExceptionEntityHandler extends ResponseEntityEx
 								.map(x -> x.getDefaultMessage())
 								.collect(Collectors.toList());
 		body.put("errors", errors);
-		return new ResponseEntity<Object>(body, headers, status);
+		return new ResponseEntity<Object>(body,headers, status);
 	}
-	
-	
 
+	
+	
 }

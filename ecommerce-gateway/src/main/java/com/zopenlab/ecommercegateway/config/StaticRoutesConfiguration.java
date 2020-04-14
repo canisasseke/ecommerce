@@ -15,6 +15,10 @@ public class StaticRoutesConfiguration {
 									.uri("lb://ecommerce-product")
 									.id("products_path")
 							)
+						.route(r -> r.path("/customers/**")
+									.uri("lb://ecommerce-customers")
+									.id("customers-path")
+							)
 						.build();
 	}
 }
