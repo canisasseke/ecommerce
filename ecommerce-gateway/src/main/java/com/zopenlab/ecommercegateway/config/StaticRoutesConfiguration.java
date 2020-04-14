@@ -12,7 +12,7 @@ public class StaticRoutesConfiguration {
 	RouteLocator staticRoutes(RouteLocatorBuilder builder) {
 		return builder.routes()
 						.route(r -> r.path("/products/**")
-									.uri("http://localhost:9001")
+									.uri("lb://ecommerce-product")
 									.id("products_path")
 							)
 						.build();
