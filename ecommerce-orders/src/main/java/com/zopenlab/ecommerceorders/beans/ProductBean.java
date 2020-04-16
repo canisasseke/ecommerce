@@ -13,8 +13,6 @@ public class ProductBean {
 	private Double prix;
 
 	public ProductBean() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Long getId() {
