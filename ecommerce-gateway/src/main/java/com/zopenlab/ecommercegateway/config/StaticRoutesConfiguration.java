@@ -12,7 +12,7 @@ public class StaticRoutesConfiguration {
 	RouteLocator staticRoutes(RouteLocatorBuilder builder) {
 		return builder.routes()
 						.route(r -> r.path("/products/**")
-									.uri("lb://ecommerce-product")
+									.uri("lb://ecommerce-products")
 									.id("products_path")
 							)
 						.route(r -> r.path("/customers/**")

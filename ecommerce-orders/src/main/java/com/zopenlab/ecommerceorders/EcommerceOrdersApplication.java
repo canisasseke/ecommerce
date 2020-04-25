@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.ribbon.RibbonClients;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 import com.zopenlab.ecommerceorders.business.IHandleOrderBusiness;
@@ -17,6 +19,8 @@ import com.zopenlab.ecommerceorders.proxies.ProductServiceProxy;
 
 @SpringBootApplication
 @EnableFeignClients
+@RibbonClients
+@EnableDiscoveryClient
 public class EcommerceOrdersApplication implements CommandLineRunner{
 
 	@Autowired

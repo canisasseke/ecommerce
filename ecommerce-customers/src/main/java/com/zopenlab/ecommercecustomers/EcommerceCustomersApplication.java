@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 import com.zopenlab.ecommercecustomers.dao.ICustomerDAO;
 import com.zopenlab.ecommercecustomers.model.Customer;
 
 @SpringBootApplication
+@EnableDiscoveryClient
 public class EcommerceCustomersApplication implements CommandLineRunner{
 
 	@Autowired

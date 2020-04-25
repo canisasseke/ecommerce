@@ -1,19 +1,11 @@
 spring:
   cloud:
-    gateway:
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins: "http://localhost:4200"
-            allowedMethods:
-            - GET
-            - OPTIONS
     discovery:
       enabled: true
   application:
     name: gateway-service
 server:
-  port: 8888
+  port: 8000
            
           
       
