@@ -7,12 +7,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.ribbon.RibbonClients;
 
 import com.zopenlab.ecommercecustomers.dao.ICustomerDAO;
 import com.zopenlab.ecommercecustomers.model.Customer;
 
 @SpringBootApplication
 @EnableDiscoveryClient
+@RibbonClients
 public class EcommerceCustomersApplication implements CommandLineRunner{
 
 	@Autowired
