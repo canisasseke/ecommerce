@@ -3,7 +3,15 @@ spring:
     discovery:
       enabled: true
   application:
-    name: gateway-service
+    name: ecommerce-gateway
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - health
+        - info
+        - metrics
 server:
   port: 8000
            
