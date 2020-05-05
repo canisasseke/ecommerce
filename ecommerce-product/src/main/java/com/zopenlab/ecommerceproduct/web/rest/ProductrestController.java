@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -38,7 +37,6 @@ public class ProductrestController {
 		log.info("Recuperation de liste des produits");
 		return productDAO.findAll();
 	}
-
 	@GetMapping("/products/{productid}")
 	public Product getProductById(@PathVariable Long productid) {
 		Optional<Product> optProduct = productDAO.findById(productid);
