@@ -5,6 +5,8 @@ spring:
     discovery:
       enabled: true
     gateway:
+      default-filters:
+      - TokenRelay
       routes:
       - id: products_path
         uri: lb://ecommerce-products
