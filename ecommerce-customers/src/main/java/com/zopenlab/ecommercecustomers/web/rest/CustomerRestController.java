@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,11 +30,13 @@ public class CustomerRestController {
 	ICustomerDAO customerDAO;
 	
 	@GetMapping("/customers")
+	@PreAuthorize("hasAnyAuthority('ROLE_READ_CUSTOMERS')")
 	public List<Customer> getAllCustomers(){
 		return customerDAO.findAll();
 	}
 	
 	@GetMapping("/customers/{customerid}")
+	@PreAuthorize("hasAnyAuthority('ROLE_READ_CUSTOMERS')")
 	public Customer getCustomerById(@PathVariable Long customerid){
 		Optional<Customer> optCustomer = customerDAO.findById(customerid);
 		if(!optCustomer.isPresent()) throw new CustomerNotFoundException("this customer with id="+ customerid+" does not exist");
@@ -41,6 +44,7 @@ public class CustomerRestController {
 	}
 	
 	@PostMapping("/customers")
+	@PreAuthorize("hasAnyAuthority('ROLE_CREATE_CUSTOMERS')")
 	public ResponseEntity<Customer> createCustomer(@Valid @RequestBody Customer customer){
 		Customer customer1 = customerDAO.save(customer);
 		URI location = ServletUriComponentsBuilder
@@ -53,6 +57,7 @@ public class CustomerRestController {
 	}
 	
 	@PutMapping("/customers/{customerid}")
+	@PreAuthorize("hasAnyAuthority('ROLE_UPDATE_CUSTOMERS')")
 	public ResponseEntity<Customer> updateCustomer(@Valid @RequestBody Customer customer, @PathVariable Long customerid) {
 		Optional<Customer> optCustomer = customerDAO.findById(customerid);
 		if(!optCustomer.isPresent()) throw new CustomerNotFoundException("this customer with id="+ customerid+" does not exist");
@@ -61,6 +66,7 @@ public class CustomerRestController {
 		return new ResponseEntity<Customer>(customer1, HttpStatus.OK);
 	}
 	@DeleteMapping("/customers/{customerid}")
+	@PreAuthorize("hasAnyAuthority('ROLE_DELETE_CUSTOMERS')")
 	public void deleteCustomer(Long customerid) {
 		Optional<Customer> optCustomer = customerDAO.findById(customerid);
 		if(!optCustomer.isPresent()) throw new CustomerNotFoundException("this customer with id="+ customerid+" does not exist");
