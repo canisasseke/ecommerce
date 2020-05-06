@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,12 +33,15 @@ public class ProductrestController {
 	
 	Logger log = LoggerFactory.getLogger(ProductrestController.class);
 	
+
 	@GetMapping("/products")
+	@PreAuthorize("hasAnyAuthority('ROLE_READ_PRODUCTS')")
 	public List<Product> getAllProducts() {
 		log.info("Recuperation de liste des produits");
 		return productDAO.findAll();
 	}
 	@GetMapping("/products/{productid}")
+	@PreAuthorize("hasAnyAuthority('ROLE_READ_PRODUCTS')")
 	public Product getProductById(@PathVariable Long productid) {
 		Optional<Product> optProduct = productDAO.findById(productid);
 		if(!optProduct.isPresent()) throw new ProductNotFoundException("this product with id="+productid+" does not exist");
@@ -45,6 +49,7 @@ public class ProductrestController {
 	}
 	
 	@PostMapping("/products")
+	@PreAuthorize("hasAnyAuthority('ROLE_CREATE_PRODUCTS')")
 	public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product){
 		
 		Product product1 = productDAO.save(product);
@@ -56,7 +61,8 @@ public class ProductrestController {
 		return ResponseEntity.created(location).body(product1);
 	}
 	
-	@PutMapping("/products/{productid}")	
+	@PutMapping("/products/{productid}")
+	@PreAuthorize("hasAnyAuthority('ROLE_UPDATE_PRODUCTS')")
 	public ResponseEntity<Product> updateProduct(@Valid @RequestBody Product product, @PathVariable Long productid) {
 		Optional<Product> optProduct = productDAO.findById(productid);
 		if(!optProduct.isPresent()) throw new ProductNotFoundException("this product with id="+productid+" does not exist");
@@ -68,6 +74,7 @@ public class ProductrestController {
 	}
 		
 	@DeleteMapping("/products/{productid}")
+	@PreAuthorize("hasAnyAuthority('ROLE_DELETE_PRODUCTS')")
 	public void deleteProduct(Long productid) {
 		Optional<Product> optProduct = productDAO.findById(productid);
 		if(!optProduct.isPresent()) throw new ProductNotFoundException("this product with id="+productid+" does not exist");
