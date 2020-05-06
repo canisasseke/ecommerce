@@ -30,17 +30,7 @@ public class SecurityConfiguration {
 	  http.csrf().disable();
 	  return http.build();
 	}
-	
-	/*
-	 * class CustomAuthenticationConverter implements Converter<Jwt,
-	 * Mono<AbstractAuthenticationToken>> {
-	 * 
-	 * @Override public Mono<AbstractAuthenticationToken> convert(Jwt source) { //
-	 * TODO Auto-generated method stub return null; }
-	 * 
-	 * }
-	 */
-			
+
 		
 }
 
