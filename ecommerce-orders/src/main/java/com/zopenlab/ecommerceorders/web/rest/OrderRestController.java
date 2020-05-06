@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,21 +28,25 @@ public class OrderRestController {
 	IHandleOrderBusiness handleOrderBusiness;
 	
 	@GetMapping("/orders")
+	@PreAuthorize("hasAnyAuthority('ROLE_READ_ORDERS')")
 	public List<Orders> getAllOrders() {
 		return handleOrderBusiness.getAllOrders();
 	}
 	
 	@GetMapping("/orders/{orderid}")
+	@PreAuthorize("hasAnyAuthority('ROLE_READ_ORDERS')")
 	public Orders getOrderById(@PathVariable(name = "orderid") Long orderid) {
 		return handleOrderBusiness.getOrderById(orderid);
 	}
 		
 	@GetMapping("/orders/{orderid}/details")
+	@PreAuthorize("hasAnyAuthority('ROLE_READ_ORDERS')")
 	public Orders getOrderDetailsById(@PathVariable(name = "orderid") Long orderid) {
 		return handleOrderBusiness.getOrderWithDetailsById(orderid);
 	}
 	
 	@PostMapping("/orders")
+	@PreAuthorize("hasAnyAuthority('ROLE_CREATE_ORDERS')")
 	public ResponseEntity<Orders> createOrder(@Valid @RequestBody Orders order) {	
 		Orders order1 = handleOrderBusiness.createOrder(order);
 		URI location = ServletUriComponentsBuilder
@@ -53,11 +58,13 @@ public class OrderRestController {
 	}
 	
 	@PutMapping("/orders/{orderid}")
+	@PreAuthorize("hasAnyAuthority('ROLE_UPDATE_ORDERS')")
 	public ResponseEntity<Orders> updateOrder(@Valid @RequestBody Orders order, @PathVariable(name = "orderid") Long orderid) {		
 		return new ResponseEntity<Orders>(handleOrderBusiness.updateOrder(order, orderid), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/orders/{orderid}")
+	@PreAuthorize("hasAnyAuthority('ROLE_DELETE_ORDERS')")
 	public void deleteOrder(@PathVariable(name = "orderid") Long orderid) {
 		handleOrderBusiness.deleteOrder(orderid);
 	}
