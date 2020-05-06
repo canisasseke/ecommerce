@@ -18,7 +18,19 @@ spring:
         uri: lb://ecommerce-orders
         predicates:
         - Path=/orders/**
-                                 
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/auth/realms/ecommerce-realm
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: ecommerce-gateway
+            client-secret: e879cad3-f91f-4e0d-af93-6e39daf3b9f5
+            redirect-uri: http://localhost:8000/*
+                                     
 management:
   endpoints:
     web:
