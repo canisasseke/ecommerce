@@ -29,8 +29,9 @@ spring:
           keycloak:
             client-id: ecommerce-gateway
             client-secret: e879cad3-f91f-4e0d-af93-6e39daf3b9f5
-            redirect-uri: http://localhost:8000/*
-                                     
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/auth/realms/ecommerce-realm
 management:
   endpoints:
     web:
