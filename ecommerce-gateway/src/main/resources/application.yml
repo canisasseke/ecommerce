@@ -1,9 +1,24 @@
 spring:
+  application:
+    name: ecommerce-gateway
   cloud:
     discovery:
       enabled: true
-  application:
-    name: ecommerce-gateway
+    gateway:
+      routes:
+      - id: products_path
+        uri: lb://ecommerce-products
+        predicates:
+        - Path=/products/**
+      - id: customers_path
+        uri: lb://ecommerce-customers
+        predicates:
+        - Path=/customers/**
+      - id: orders_path
+        uri: lb://ecommerce-orders
+        predicates:
+        - Path=/orders/**
+                                 
 management:
   endpoints:
     web:
