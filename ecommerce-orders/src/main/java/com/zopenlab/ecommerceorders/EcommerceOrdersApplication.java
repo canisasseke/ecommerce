@@ -8,29 +8,29 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.ribbon.RibbonClients;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 import com.zopenlab.ecommerceorders.business.IHandleOrderBusiness;
 import com.zopenlab.ecommerceorders.models.Orders;
 import com.zopenlab.ecommerceorders.models.ProductItem;
-import com.zopenlab.ecommerceorders.proxies.CustormerServiceProxy;
-import com.zopenlab.ecommerceorders.proxies.ProductServiceProxy;
 
 @SpringBootApplication
-@EnableFeignClients
-@RibbonClients
+//@EnableFeignClients
+//@RibbonClients
 @EnableDiscoveryClient
 public class EcommerceOrdersApplication implements CommandLineRunner{
 
 	@Autowired
 	IHandleOrderBusiness handleOrderBusiness;
 	
-	@Autowired
-	CustormerServiceProxy custormerServiceProxy;
-	@Autowired
-	ProductServiceProxy productServiceProxy;
-	
+	 @LoadBalanced
+	  @Bean
+	  RestTemplate restTemplate() {
+	      return new RestTemplate();
+	  }
+	 
 	public static void main(String[] args) {
 		SpringApplication.run(EcommerceOrdersApplication.class, args);
 	}

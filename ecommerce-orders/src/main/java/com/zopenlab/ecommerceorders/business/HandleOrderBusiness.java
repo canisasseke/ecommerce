@@ -5,13 +5,14 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import com.zopenlab.ecommerceorders.beans.CustomerBean;
+import com.zopenlab.ecommerceorders.beans.ProductBean;
 import com.zopenlab.ecommerceorders.dao.IOrderDAO;
 import com.zopenlab.ecommerceorders.dao.IProductItemDAO;
 import com.zopenlab.ecommerceorders.models.Orders;
 import com.zopenlab.ecommerceorders.models.ProductItem;
-import com.zopenlab.ecommerceorders.proxies.CustormerServiceProxy;
-import com.zopenlab.ecommerceorders.proxies.ProductServiceProxy;
 import com.zopenlab.ecommerceorders.web.exceptions.OrderNotFoundException;
 
 @Service
@@ -22,10 +23,7 @@ public class HandleOrderBusiness implements IHandleOrderBusiness {
 	@Autowired
 	IProductItemDAO productItemDAO;
 	@Autowired
-	CustormerServiceProxy custormerServiceProxy;
-	@Autowired
-	ProductServiceProxy productServiceProxy;
-	
+	private RestTemplate restTemplate;
 	@Override
 	public List<Orders> getAllOrders() {
 		return orderDAO.findAll();
@@ -43,9 +41,12 @@ public class HandleOrderBusiness implements IHandleOrderBusiness {
 		Optional<Orders> optOrder= orderDAO.findById(orderid);
 		if(!optOrder.isPresent()) throw new OrderNotFoundException("Order not found");
 		Orders order = optOrder.get();
-		order.setCustomerBean(custormerServiceProxy.getCustomerById(order.getCustomerid()));
+		//CustomerBean customer = restTemplate.getForObject("http://ecommerce-customers/"+order.getCustomerid(), CustomerBean.class);
+		//order.setCustomerBean(custormerServiceProxy.getCustomerById(order.getCustomerid()));
+		order.setCustomerBean(restTemplate.getForObject("http://ecommerce-customers/customers/"+order.getCustomerid(), CustomerBean.class));
 		order.getProductItems().forEach(item -> {
-			item.setProductBean(productServiceProxy.getProductById(item.getId()));
+			//item.setProductBean(productServiceProxy.getProductById(item.getId()));
+			item.setProductBean(restTemplate.getForObject("http://ecommerce-products/products/"+item.getProductid(), ProductBean.class));
 		});
 		return order;
 	}
