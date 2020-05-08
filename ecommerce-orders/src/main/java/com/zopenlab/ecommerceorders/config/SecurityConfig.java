@@ -30,6 +30,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
   jsr250Enabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	
 	  @Override
 	  protected void configure(HttpSecurity http) throws Exception {
 	    // Validate tokens through configured OpenID Provider

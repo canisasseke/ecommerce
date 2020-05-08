@@ -34,7 +34,6 @@ public class EcommerceOrdersApplication implements CommandLineRunner{
 	public static void main(String[] args) {
 		SpringApplication.run(EcommerceOrdersApplication.class, args);
 	}
-
 	@Override
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
