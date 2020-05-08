@@ -24,6 +24,7 @@ public class HandleOrderBusiness implements IHandleOrderBusiness {
 	IProductItemDAO productItemDAO;
 	@Autowired
 	private RestTemplate restTemplate;
+	
 	@Override
 	public List<Orders> getAllOrders() {
 		return orderDAO.findAll();
@@ -41,11 +42,8 @@ public class HandleOrderBusiness implements IHandleOrderBusiness {
 		Optional<Orders> optOrder= orderDAO.findById(orderid);
 		if(!optOrder.isPresent()) throw new OrderNotFoundException("Order not found");
 		Orders order = optOrder.get();
-		//CustomerBean customer = restTemplate.getForObject("http://ecommerce-customers/"+order.getCustomerid(), CustomerBean.class);
-		//order.setCustomerBean(custormerServiceProxy.getCustomerById(order.getCustomerid()));
 		order.setCustomerBean(restTemplate.getForObject("http://ecommerce-customers/customers/"+order.getCustomerid(), CustomerBean.class));
 		order.getProductItems().forEach(item -> {
-			//item.setProductBean(productServiceProxy.getProductById(item.getId()));
 			item.setProductBean(restTemplate.getForObject("http://ecommerce-products/products/"+item.getProductid(), ProductBean.class));
 		});
 		return order;

@@ -17,8 +17,6 @@ import com.zopenlab.ecommerceorders.models.Orders;
 import com.zopenlab.ecommerceorders.models.ProductItem;
 
 @SpringBootApplication
-//@EnableFeignClients
-//@RibbonClients
 @EnableDiscoveryClient
 public class EcommerceOrdersApplication implements CommandLineRunner{
 
