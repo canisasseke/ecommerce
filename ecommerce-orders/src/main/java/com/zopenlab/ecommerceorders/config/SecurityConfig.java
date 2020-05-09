@@ -30,8 +30,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
   jsr250Enabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	
-	  @Override
+
+	@Override
 	  protected void configure(HttpSecurity http) throws Exception {
 	    // Validate tokens through configured OpenID Provider
 	    http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(new GrantedAuthoritiesExtractor());
@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		  public Map<String, Object> convert(Map<String, Object> claims) {
 		    Map<String, Object> convertedClaims = this.delegate.convert(claims);
 		    String username = (String) convertedClaims.get("preferred_username");
-		    convertedClaims.put("sub", username);
+		    convertedClaims.put("sub", username );
 		    return convertedClaims;
 		  }
 
@@ -76,6 +76,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		    }
 		}
 		  
-	  
+		 
 		
 }

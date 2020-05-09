@@ -22,6 +22,8 @@ import org.springframework.security.oauth2.jwt.MappedJwtClaimSetConverter;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 
+import com.zopenlab.ecommerceproduct.beans.User;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity( prePostEnabled = true, 
@@ -55,7 +57,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		  public Map<String, Object> convert(Map<String, Object> claims) {
 		    Map<String, Object> convertedClaims = this.delegate.convert(claims);
 		    String username = (String) convertedClaims.get("preferred_username");
-		    convertedClaims.put("sub", username);
+		    String fullname = (String) convertedClaims.get("name");
+		    String airdrome = (String) convertedClaims.get("aerodrome");
+		    String email = (String) convertedClaims.get("email");
+		    User user = new User(username, email, fullname, airdrome);
+		    convertedClaims.put("sub", user);
 		    return convertedClaims;
 		  }
 

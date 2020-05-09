@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +41,13 @@ public class ProductrestController {
 		log.info("Recuperation de liste des produits");
 		return productDAO.findAll();
 	}
+	@GetMapping("/products/user")
+	public String getUserLogged() {
+		return SecurityContextHolder.getContext().getAuthentication().getName().toString();
+		
+		
+	}
+	
 	@GetMapping("/products/{productid}")
 	@PreAuthorize("hasAnyAuthority('ROLE_READ_PRODUCTS')")
 	public Product getProductById(@PathVariable Long productid) {

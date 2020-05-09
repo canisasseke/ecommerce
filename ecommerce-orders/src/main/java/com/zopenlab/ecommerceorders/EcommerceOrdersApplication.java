@@ -10,6 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.AbstractOAuth2Token;
 import org.springframework.web.client.RestTemplate;
 
 import com.zopenlab.ecommerceorders.business.IHandleOrderBusiness;
@@ -23,10 +26,25 @@ public class EcommerceOrdersApplication implements CommandLineRunner{
 	@Autowired
 	IHandleOrderBusiness handleOrderBusiness;
 	
-	 @LoadBalanced
+	  @LoadBalanced
 	  @Bean
 	  RestTemplate restTemplate() {
-	      return new RestTemplate();
+		 RestTemplate rest = new RestTemplate();
+		    rest.getInterceptors().add((request, body, execution) -> {
+		        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		        if (authentication == null) {
+		            return execution.execute(request, body);
+		        }
+
+		        if (!(authentication.getCredentials() instanceof AbstractOAuth2Token)) {
+		            return execution.execute(request, body);
+		        }
+
+		        AbstractOAuth2Token token = (AbstractOAuth2Token) authentication.getCredentials();
+		        request.getHeaders().setBearerAuth(token.getTokenValue());
+		        return execution.execute(request, body);
+		    });
+		    return rest;
 	  }
 	 
 	public static void main(String[] args) {
