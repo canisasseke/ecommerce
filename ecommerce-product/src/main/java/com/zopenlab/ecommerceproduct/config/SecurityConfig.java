@@ -36,8 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    // Validate tokens through configured OpenID Provider
 	    http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(new GrantedAuthoritiesExtractor());
 	    // Require authentication for all requests except actuator endpoint
-	    http.authorizeRequests().antMatchers("/actuator/**").permitAll();
-	    http.authorizeRequests().anyRequest().authenticated();
+	    http.authorizeRequests()
+	    						.antMatchers("/actuator/**").permitAll()
+	    						.anyRequest().authenticated();
 	    // Allow showing pages within a frame
 	    http.headers().frameOptions().sameOrigin();
 	  }

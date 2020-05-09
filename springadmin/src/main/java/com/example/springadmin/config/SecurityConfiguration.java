@@ -1,4 +1,4 @@
-package com.zopenlab.ecommercegateway.config;
+package com.example.springadmin.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,7 @@ import org.springframework.security.web.server.header.XFrameOptionsServerHttpHea
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfiguration {
-
+	
 	@Bean
 	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http,
 	    ReactiveClientRegistrationRepository clientRegistrationRepository) {
@@ -22,11 +22,9 @@ public class SecurityConfiguration {
 	  http.logout(logout -> logout.logoutSuccessHandler(
 	    new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository)));
 
-	  // Require authentication for all requests except actautor endpoint
+	  // Require authentication for all requests
 	  http.authorizeExchange()
-	  						.pathMatchers("/actuator/**").permitAll()
 	  						.anyExchange().authenticated();
-
 	  // Allow showing /home within a frame
 	  http.headers().frameOptions().mode(Mode.SAMEORIGIN);
 
@@ -34,7 +32,5 @@ public class SecurityConfiguration {
 	  http.csrf().disable();
 	  return http.build();
 	}
-
-		
+	
 }
-

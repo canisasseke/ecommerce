@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: springbootadmin
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/auth/realms/ecommerce-realm
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: springbootadmin
+            client-secret: e41761e3-26d6-4dbf-a891-a07e9f216c1a  
+  boot:
+    admin:
+      discovery:
+        ignored-services:
+        - springbootadmin
+server:
+  port: 9500

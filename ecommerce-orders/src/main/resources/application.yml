@@ -14,4 +14,4 @@ management:
         - health
         - info
         - metrics
-    
+ 
