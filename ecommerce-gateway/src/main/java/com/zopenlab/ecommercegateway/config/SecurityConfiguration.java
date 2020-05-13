@@ -29,17 +29,17 @@ public class SecurityConfiguration{
 	  return http.build();
 	}
 
-	@Bean
-	public CorsWebFilter corsWebFilter() {
-	      CorsConfiguration corsConfiguration = new CorsConfiguration();
-	      corsConfiguration.setAllowCredentials(true);
-	      corsConfiguration.addAllowedHeader("*");
-	      corsConfiguration.addAllowedMethod("*");
-	      corsConfiguration.addAllowedOrigin("*");
-	      UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
-	      corsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-	      return new CorsWebFilter(corsConfigurationSource);
-	   }
+	
+	  @Bean public CorsWebFilter corsWebFilter() { CorsConfiguration
+	  corsConfiguration = new CorsConfiguration();
+	  corsConfiguration.setAllowCredentials(true);
+	  corsConfiguration.addAllowedHeader("*");
+	  corsConfiguration.addAllowedMethod("*");
+	  corsConfiguration.addAllowedOrigin("*"); UrlBasedCorsConfigurationSource
+	  corsConfigurationSource = new UrlBasedCorsConfigurationSource();
+	  corsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+	  return new CorsWebFilter(corsConfigurationSource); }
+	 
 	
 }
 
