@@ -7,11 +7,14 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.client.oidc.web.server.logout.OidcClientInitiatedServerLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.header.XFrameOptionsServerHttpHeadersWriter.Mode;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
 
 @Configuration
 @EnableWebFluxSecurity
-public class SecurityConfiguration {
+public class SecurityConfiguration{
 
 	@Bean
 	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http,
@@ -21,20 +24,22 @@ public class SecurityConfiguration {
 	  // Also logout at the OpenID Connect provider
 	  http.logout(logout -> logout.logoutSuccessHandler(
 	    new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository)));
-
 	  // Require authentication for all requests except actautor endpoint
-	  http.authorizeExchange()
-	  						.pathMatchers("/actuator/**").permitAll()
-	  						.anyExchange().authenticated();
-
-	  // Allow showing /home within a frame
-	  http.headers().frameOptions().mode(Mode.SAMEORIGIN);
-
-	  // Disable CSRF in the gateway to prevent conflicts with proxied service CSRF
 	  http.csrf().disable();
 	  return http.build();
 	}
 
-		
+	@Bean
+	public CorsWebFilter corsWebFilter() {
+	      CorsConfiguration corsConfiguration = new CorsConfiguration();
+	      corsConfiguration.setAllowCredentials(true);
+	      corsConfiguration.addAllowedHeader("*");
+	      corsConfiguration.addAllowedMethod("*");
+	      corsConfiguration.addAllowedOrigin("*");
+	      UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
+	      corsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+	      return new CorsWebFilter(corsConfigurationSource);
+	   }
+	
 }
 
