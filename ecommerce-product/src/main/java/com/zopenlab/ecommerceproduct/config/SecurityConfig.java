@@ -58,11 +58,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		  public Map<String, Object> convert(Map<String, Object> claims) {
 		    Map<String, Object> convertedClaims = this.delegate.convert(claims);
 		    String username = (String) convertedClaims.get("preferred_username");
-		    String fullname = (String) convertedClaims.get("name");
-		    String airdrome = (String) convertedClaims.get("aerodrome");
-		    String email = (String) convertedClaims.get("email");
-		    User user = new User(username, email, fullname, airdrome);
-		    convertedClaims.put("sub", user);
+		    //String fullname = (String) convertedClaims.get("name");
+		    //String airdrome = (String) convertedClaims.get("aerodrome");
+		   // String email = (String) convertedClaims.get("email");
+		    //User user = new User(username, email, fullname, airdrome);
+		    convertedClaims.put("sub", username);
 		    return convertedClaims;
 		  }
 
@@ -71,9 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		@SuppressWarnings("unchecked")
 		@Override
 		protected Collection<GrantedAuthority> extractAuthorities(Jwt jwt) {
-			final Map<String, Object> resourceAccessClaim = (Map<String, Object>) jwt.getClaims().get("resource_access");
-		    final Map<String, Object> ecommercegatewayClaim = (Map<String, Object>) resourceAccessClaim.get("ecommerce-gateway");
-		    Collection<String> authorities = (Collection<String>) ecommercegatewayClaim.get("roles");
+		    Collection<String> authorities = (Collection<String>) jwt.getClaims().get("authorities");
 		        return authorities.stream()
 		        		.map(roleName -> "ROLE_" + roleName)
 		                .map(SimpleGrantedAuthority::new)

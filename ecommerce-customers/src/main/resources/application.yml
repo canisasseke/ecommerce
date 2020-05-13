@@ -1,13 +1,13 @@
 spring:
   application:
-    name: ecommerce-orders
+    name: ecommerce-customers
   security:
     oauth2:
       client:
         registration:
           keycloak:
-            client-id: ecommerce-orders
-            client-secret: 8861b19a-8abc-43fb-b338-858b6fe64aa4
+            client-id: ecommerce-customers
+            client-secret: a8f9ad32-c380-4b58-9318-73db87352d59
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8080/auth/realms/ecommerce-realm

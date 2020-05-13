@@ -30,8 +30,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
   jsr250Enabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-
-	@Override
+	 @Override
 	  protected void configure(HttpSecurity http) throws Exception {
 	    // Validate tokens through configured OpenID Provider
 	    http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(new GrantedAuthoritiesExtractor());
@@ -66,9 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		@SuppressWarnings("unchecked")
 		@Override
 		protected Collection<GrantedAuthority> extractAuthorities(Jwt jwt) {
-			final Map<String, Object> resourceAccessClaim = (Map<String, Object>) jwt.getClaims().get("resource_access");
-		    final Map<String, Object> ecommercegatewayClaim = (Map<String, Object>) resourceAccessClaim.get("ecommerce-gateway");
-		    Collection<String> authorities = (Collection<String>) ecommercegatewayClaim.get("roles");
+		    Collection<String> authorities = (Collection<String>) jwt.getClaims().get("authorities");
 		        return authorities.stream()
 		        		.map(roleName -> "ROLE_" + roleName)
 		                .map(SimpleGrantedAuthority::new)
