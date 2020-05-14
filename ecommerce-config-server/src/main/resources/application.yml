@@ -2,13 +2,18 @@ server:
   port: 8888
 spring:
   application:
-    name: ecomerce-config-server
+    name: config-server
   cloud:
     config:
       server:
         git:
           uri: https://github.com/canisasseke/ecommerce-config-repo
-   
-                
-                
-            
+---
+spring:
+  profiles:
+  - local
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///home/kaskinas/ecommerce/ecommerce-config-repo
