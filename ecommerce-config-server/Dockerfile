@@ -17,5 +17,6 @@ WORKDIR $APP_HOME
 EXPOSE 8888
 #COPY --from=MAVEN_BUILD /build/target/${APP_FILE} $APP_HOME/
 COPY target/${APP_FILE} $APP_HOME/
-ENTRYPOINT ["sh", "-c"]
-CMD ["exec java -jar $APP_FILE"]
+ENTRYPOINT ["java", "-jar","$APP_FILE"]
+#ENTRYPOINT ["sh", "-c"]
+#CMD ["exec java -jar $APP_FILE"]

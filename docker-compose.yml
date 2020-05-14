@@ -1,0 +1,17 @@
+version: '2'
+services: 
+  config-server:
+    image: kaskinas/config-server:1.0
+    container_name: config-server
+    ports: 
+      - 8888:8888
+
+  discovery-server:
+    image: kaskinas/discovery-server:1.0
+    container_name: discovery-server
+    depends_on: 
+      - config-server
+    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java","-jar","$APP_FILE"]
+    ports: 
+      - 8761:8761
+    
