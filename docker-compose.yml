@@ -11,8 +11,8 @@ services:
     container_name: discovery-server
     depends_on: 
       - config-server
-    command: ["./wait-for-it.sh","config-server:8888","--","java","-jar","/usr/apps/ecommerce-eureka-0.0.1-SNAPSHOT.jar"]
-    
+    command: ["-c","/wait-for-it.sh config-server:8888 && java -jar /usr/apps/ecommerce-eureka-0.0.1-SNAPSHOT.jar"] 
+    entrypoint: ["/bin/sh"]
     ports: 
       - 8761:8761
     

@@ -12,6 +12,7 @@
 #########################
 FROM openjdk:11-jre-slim
 VOLUME /tmp
+#RUN apt-get update && \ #apt-get install -y netcat;
 ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh wait-for-it.sh
 RUN bash -c 'chmod +x wait-for-it.sh'
 ENV APP_HOME /usr/apps
@@ -21,6 +22,5 @@ WORKDIR $APP_HOME
 EXPOSE 8761
 #COPY --from=MAVEN_BUILD /build/target/${APP_FILE} $APP_HOME/
 COPY target/${APP_FILE} $APP_HOME/
-ENTRYPOINT ["java", "-jar","/usr/apps/ecommerce-eureka-0.0.1-SNAPSHOT.jar"]
-#ENTRYPOINT ["sh", "-c"]
-#CMD ["exec java -jar $APP_FILE"]
+ENTRYPOINT ["/bin/sh"]
+CMD ["-c java -jar $APP_FILE"]
