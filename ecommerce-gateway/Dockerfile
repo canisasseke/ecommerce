@@ -16,10 +16,10 @@ VOLUME /tmp
 ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh wait-for-it.sh
 RUN bash -c 'chmod +x wait-for-it.sh'
 ENV APP_HOME /usr/apps
-ENV APP_FILE ecommerce-orders-0.0.1-SNAPSHOT.jar
+ENV APP_FILE ecommerce-gateway-0.0.1-SNAPSHOT.jar
 ENV SPRING_PROFILES_ACTIVE docker
 WORKDIR $APP_HOME
-EXPOSE 9003
+EXPOSE 8000
 #COPY --from=MAVEN_BUILD /build/target/${APP_FILE} $APP_HOME/
 COPY target/${APP_FILE} $APP_HOME/
 ENTRYPOINT ["/bin/sh"]

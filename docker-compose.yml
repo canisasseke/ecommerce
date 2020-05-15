@@ -5,6 +5,7 @@ services:
     container_name: config-server
     ports: 
       - 8888:8888
+
   mysql:
     image: mysql:latest
     container_name: mysql
@@ -17,6 +18,7 @@ services:
        MYSQL_PASSWORD: dbpassword
     ports: 
       - 3306
+
   discovery-server:
     image: kaskinas/discovery-server:1.0
     container_name: discovery-server
@@ -25,6 +27,7 @@ services:
     command: ["-c","/wait-for-it.sh -t 30 config-server:8888 && java -jar /usr/apps/ecommerce-eureka-0.0.1-SNAPSHOT.jar"] 
     ports: 
       - 8761:8761
+
   ecommerce-products:
     image: kaskinas/ecommerce-products:1.0
     container_name: products 
@@ -35,6 +38,7 @@ services:
     command: ["-c","/wait-for-it.sh -t 30 discovery-server:8761 && java -jar /usr/apps/ecommerce-product-0.0.1-SNAPSHOT.jar"] 
     ports: 
       - 9001:9001
+  
   ecommerce-customers:
     image: kaskinas/ecommerce-customers:1.0
     container_name: customers
@@ -45,6 +49,37 @@ services:
     command: ["-c","/wait-for-it.sh -t 30 discovery-server:8761 && java -jar /usr/apps/ecommerce-customers-0.0.1-SNAPSHOT.jar"] 
     ports: 
      - 9002:9002
+    
+  ecommerce-orders:
+    image: kaskinas/ecommerce-orders:1.0
+    container_name: orders 
+    depends_on: 
+      - config-server 
+      - discovery-server
+      - mysql
+    command: ["-c","/wait-for-it.sh -t 30 discovery-server:8761 && java -jar /usr/apps/ecommerce-orders-0.0.1-SNAPSHOT.jar"]
+    ports: 
+      - 9003:9003
+  
+  ecommerce-gateway:
+    image: kaskinas/ecommerce-gateway:1.0
+    container_name: gateway 
+    depends_on: 
+      - config-server 
+      - discovery-server
+    command: ["-c","/wait-for-it.sh -t 30 discovery-server:8761 && java -jar /usr/apps/ecommerce-gateway-0.0.1-SNAPSHOT.jar"]
+    ports: 
+      - 8000:8000
+  
+  monitoring-server:
+    image: kaskinas/springbootadmin:1.0
+    container_name: springbootadmin
+    depends_on:
+      - discovery-server
+    command: ["-c","/wait-for-it.sh -t 30 discovery-server:8761 && java -jar /usr/apps/springadmin-0.0.1-SNAPSHOT.jar"]
+    ports: 
+      - 9500:9500
+
   tracing-server:
     image: openzipkin/zipkin:latest
     container_name: zipkin
