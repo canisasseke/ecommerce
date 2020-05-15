@@ -11,7 +11,8 @@ services:
     container_name: discovery-server
     depends_on: 
       - config-server
-    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java","-jar","$APP_FILE"]
+    command: ["./wait-for-it.sh","config-server:8888","--","java","-jar","/usr/apps/ecommerce-eureka-0.0.1-SNAPSHOT.jar"]
+    
     ports: 
       - 8761:8761
     
