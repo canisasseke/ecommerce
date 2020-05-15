@@ -25,6 +25,16 @@ services:
     command: ["-c","/wait-for-it.sh -t 30 config-server:8888 && java -jar /usr/apps/ecommerce-eureka-0.0.1-SNAPSHOT.jar"] 
     ports: 
       - 8761:8761
+  ecommerce-products:
+    image: kaskinas/ecommerce-products:1.0
+    container_name: products 
+    depends_on: 
+      - config-server
+      - discovery-server
+      - mysql
+    command: ["-c","/wait-for-it.sh -t 30 discovery-server:8761 && java -jar /usr/apps/ecommerce-product-0.0.1-SNAPSHOT.jar"] 
+    ports: 
+      - 9001:9001
   ecommerce-customers:
     image: kaskinas/ecommerce-customers:1.0
     container_name: customers
