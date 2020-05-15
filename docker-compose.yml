@@ -5,14 +5,41 @@ services:
     container_name: config-server
     ports: 
       - 8888:8888
-
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    volumes: 
+      - mysqlecommercedb:/var/lib/mysql
+    environment: 
+       MYSQL_ROOT_PASSWORD: root 
+       MYSQL_DATABASE: ecommercedb
+       MYSQL_USER: dbuser
+       MYSQL_PASSWORD: dbpassword
+    ports: 
+      - 3306
   discovery-server:
     image: kaskinas/discovery-server:1.0
     container_name: discovery-server
     depends_on: 
       - config-server
-    command: ["-c","/wait-for-it.sh config-server:8888 && java -jar /usr/apps/ecommerce-eureka-0.0.1-SNAPSHOT.jar"] 
-    entrypoint: ["/bin/sh"]
+    command: ["-c","/wait-for-it.sh -t 30 config-server:8888 && java -jar /usr/apps/ecommerce-eureka-0.0.1-SNAPSHOT.jar"] 
     ports: 
       - 8761:8761
-    
+  ecommerce-customers:
+    image: kaskinas/ecommerce-customers:1.0
+    container_name: customers
+    depends_on: 
+      - config-server 
+      - discovery-server
+      - mysql
+    command: ["-c","/wait-for-it.sh -t 30 discovery-server:8761 && java -jar /usr/apps/ecommerce-customers-0.0.1-SNAPSHOT.jar"] 
+    ports: 
+     - 9002:9002
+  tracing-server:
+    image: openzipkin/zipkin:latest
+    container_name: zipkin
+    ports: 
+      - 9411:9411
+volumes: 
+    mysqlecommercedb:
+        driver: local  
